@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import { Header, Icon, List } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 
 class App extends Component {
   state = {
