@@ -1,13 +1,18 @@
-import { action, observable, computed, configure, runInAction } from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import { action, observable, computed, runInAction } from "mobx";
+import { SyntheticEvent } from "react";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import agent from "../api/agent";
 import { IActivity } from "../models/activity";
+import { RootStore } from "./rootStore";
 
-configure({ enforceActions: "always" });
+export default class ActivityStore {
+  rootStore: RootStore;
 
-class ActivityStore {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+  }
+
   @observable activityRegistry = new Map();
   @observable loadingInitial = false;
 
@@ -104,12 +109,12 @@ class ActivityStore {
         this.activityRegistry.set(activity.id, activity);
         this.submitting = false;
       });
-      history.push(`/activities/${activity.id}`)
+      history.push(`/activities/${activity.id}`);
     } catch (error) {
       runInAction("create activity error", () => {
         this.submitting = false;
       });
-      toast.error('Problem submitting data')
+      toast.error("Problem submitting data");
       console.log(error.response);
     }
   };
@@ -123,13 +128,13 @@ class ActivityStore {
         this.activity = activity;
         this.submitting = false;
       });
-      history.push(`/activities/${activity.id}`)
+      history.push(`/activities/${activity.id}`);
     } catch (error) {
       runInAction("edit activity error", () => {
         this.submitting = false;
       });
       console.log(error.response);
-      toast.error('Problem submitting data')
+      toast.error("Problem submitting data");
     }
   };
 
@@ -155,5 +160,3 @@ class ActivityStore {
     }
   };
 }
-
-export default createContext(new ActivityStore());
